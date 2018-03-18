@@ -155,4 +155,16 @@ rm(DGS10)
 
 ## OANDA
 
-Contributions needed.
+Oanda only allows up to 6 months of data downloading.
+If you are looking for foreign exchange currency data, downloading the data from your preferred currency is advisable and easy through the MT4 platform which you can download for free "https://www.metatrader4.com/". This method allows you to look at all possible exchange rates (as far as I know).
+Once you have opened your currency chart, simply choose the timeframe and scroll back as far as you please.
+Then go to Tools<Data Center (or F2), and you will be able to download the data you just generated in the platform.
+
+A bit of wrangling will get your data set to the xts format getSymbols produces
+```{r sample code FX data}
+EUtx <- read.csv("C:/Users/Jhon doe/Documents/R/FXdata/EURUSD.csv", header = FALSE, stringsAsFactors = FALSE)
+colnames(EUtx) <- c("Date","Open","High","Low","Close","Volume")
+EUtx$Date <- as.Date(EU240tx$Date, format = "%Y.%m.%d %H:%M") 
+EUtx <- xts(x = EUtx[,2:6], order.by = EUtx[,1])
+plot(Cl(EUtx))  #this plot assumes quantstrat is already loaded
+```
